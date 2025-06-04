@@ -3,7 +3,7 @@ project:
   author:       "MoisesPabloc"
   description:  "caja de automatic"
   language:     "Verilog"
-  clock_hz:     25000
+  clock_hz:     1000000
   tiles:        "1x1"
   top_module:   "tt_um_fms_MoisesPabloc"
   source_files:
@@ -16,10 +16,6 @@ pinout:
   ui[1]: "shift_up"
   ui[2]: "shift_down"
   ui[3]: "brake"
-  ui[4]: ""
-  ui[5]: ""
-  ui[6]: ""
-  ui[7]: ""
 
   uo[0]: "SEG_A"
   uo[1]: "SEG_B"
@@ -28,7 +24,6 @@ pinout:
   uo[4]: "SEG_E"
   uo[5]: "SEG_F"
   uo[6]: "SEG_G"
-  uo[7]: ""
 
   uio[0]: ""
   uio[1]: ""
@@ -38,6 +33,4 @@ pinout:
   uio[5]: ""
   uio[6]: ""
   uio[7]: ""
-
-yaml_version: 6
 
