@@ -1,9 +1,8 @@
-# Tiny Tapeout project information
 project:
-  title:        "caja de velocidades"
+  title:        "caja de automatic"
   author:       "MoisesPabloc"
   discord:      ""
-  description:  "caja de velocidades automatica"
+  description:  "caja de automatic"
   language:     "Verilog"
   clock_hz:     25000
   tiles:        "1x1"
@@ -13,7 +12,6 @@ project:
     - "tt_um_fms_MoisesPabloc.v"
     - "clock_divider.v"
 
-# The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
   ui[0]: "reset"
   ui[1]: "shift_up"
