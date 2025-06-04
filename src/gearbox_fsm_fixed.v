@@ -1,20 +1,3 @@
-
-// gearbox_fsm.v (compatible con Verilog-2001)
-
-module clock_divider #(parameter DIV = 25_000_000)(
-    input clk,
-    output reg slow_clk = 0
-);
-    reg [31:0] counter = 0;
-    always @(posedge clk) begin
-        counter <= counter + 1;
-        if (counter >= DIV) begin
-            slow_clk <= ~slow_clk;
-            counter <= 0;
-        end
-    end
-endmodule
-
 module gearbox_fsm(
     input clk, reset, shift_up, shift_down, brake,
     output reg [6:0] seg
