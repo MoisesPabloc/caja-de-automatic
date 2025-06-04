@@ -1,41 +1,42 @@
-
 module gearbox_fsm(
-    input clk, reset, shift_up, shift_down, brake,
-  
-    output reg [6:0] seg
+    input clk,
+    input reset,
+    input shift_up,
+    input shift_down,
+    input brake,
+    (* keep = "true" *) output reg [6:0] seg
 );
 
-    typedef enum reg [3:0] {
-        P_STATE = 4'd0,
-        R_STATE = 4'd1,
-        N_STATE = 4'd2,
-        G1 = 4'd3,
-        G2 = 4'd4,
-        G3 = 4'd5,
-        G4 = 4'd6,
-        G5 = 4'd7,
-        G6 = 4'd8
-    } gear_state;
+    // Estados
+    parameter P_STATE = 4'd0,
+              R_STATE = 4'd1,
+              N_STATE = 4'd2,
+              G1      = 4'd3,
+              G2      = 4'd4,
+              G3      = 4'd5,
+              G4      = 4'd6,
+              G5      = 4'd7,
+              G6      = 4'd8;
 
-    gear_state current_state, next_state;
+    reg [3:0] current_state, next_state;
 
-    // Moore Output Logic
+    // Mapeo de segmentos para display de 7 segmentos (invertidos)
     always @(*) begin
         case (current_state)
-            P_STATE: seg = 7'b0111000; // P
-            R_STATE: seg = 7'b0101111; // R
-            N_STATE: seg = 7'b0111011; // N
-            G1: seg = 7'b0000110; // 1
-            G2: seg = 7'b1011011; // 2
-            G3: seg = 7'b1001111; // 3
-            G4: seg = 7'b1100110; // 4
-            G5: seg = 7'b1101101; // 5
-            G6: seg = 7'b1111101; // 6
-            default: seg = 7'b1111111;
+            P_STATE: seg = ~7'b0111000;  // P
+            R_STATE: seg = ~7'b0101111;  // R
+            N_STATE: seg = ~7'b0111011;  // N
+            G1:      seg = ~7'b0000110;  // 1
+            G2:      seg = ~7'b1011011;  // 2
+            G3:      seg = ~7'b1001111;  // 3
+            G4:      seg = ~7'b1100110;  // 4
+            G5:      seg = ~7'b1101101;  // 5
+            G6:      seg = ~7'b1111101;  // 6
+            default: seg = 7'b1111111;   // Display apagado (ningún segmento encendido)
         endcase
     end
 
-    // Mealy Transition Logic
+    // Transiciones
     always @(*) begin
         next_state = current_state;
         case (current_state)
@@ -66,7 +67,7 @@ module gearbox_fsm(
         endcase
     end
 
-    // State Register
+    // Registro de estado
     always @(posedge clk or posedge reset) begin
         if (reset)
             current_state <= P_STATE;
@@ -75,3 +76,4 @@ module gearbox_fsm(
     end
 
 endmodule
+

@@ -1,3 +1,4 @@
+
 module top_gearbox_fsm(
     input clk,
     input reset,
@@ -5,17 +6,16 @@ module top_gearbox_fsm(
     input shift_down,
     input brake,
     output [6:0] seg,
-    output reg anode0
+    output reg [3:0] an
 );
-
     wire slow_clk;
 
-    clock_divider #(25_000_000) div_inst(
+    clock_divider #(25_000_000) divider (
         .clk(clk),
         .slow_clk(slow_clk)
     );
 
-    gearbox_fsm fsm_inst(
+    gearbox_fsm fsm (
         .clk(slow_clk),
         .reset(reset),
         .shift_up(shift_up),
@@ -24,9 +24,8 @@ module top_gearbox_fsm(
         .seg(seg)
     );
 
-    // Activamos solo el primer dígito (AN0)
+    // Solo un display encendido
     always @(*) begin
-        anode0 = 0;  // Activo en bajo
+        an = 4'b1110;
     end
-
 endmodule
