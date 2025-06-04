@@ -17,7 +17,6 @@ project:
   # Source files must be in ./src and you must list each source file separately, one per line.
   # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
   source_files:
-    - "clock_divider.v"
     - "gearbox_fsm.v"
     - "tt_um_fms_MoisesPabloc.v"
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
