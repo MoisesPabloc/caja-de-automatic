@@ -4,7 +4,7 @@ module gearbox_fsm(
     input shift_up,
     input shift_down,
     input brake,
-    (* keep = "true" *) output reg [6:0] seg
+    output reg [6:0] seg
 );
 
     // Estados
@@ -20,30 +20,28 @@ module gearbox_fsm(
 
     reg [3:0] current_state, next_state;
 
-    // Mapeo de segmentos para display de 7 segmentos (invertidos)
+    // Mapeo de segmentos (activo bajo)
     always @(*) begin
         case (current_state)
-            P_STATE: seg = ~7'b0111000;  // P
-            R_STATE: seg = ~7'b0101111;  // R
-            N_STATE: seg = ~7'b0111011;  // N
-            G1:      seg = ~7'b0000110;  // 1
-            G2:      seg = ~7'b1011011;  // 2
-            G3:      seg = ~7'b1001111;  // 3
-            G4:      seg = ~7'b1100110;  // 4
-            G5:      seg = ~7'b1101101;  // 5
-            G6:      seg = ~7'b1111101;  // 6
-            default: seg = 7'b1111111;   // Display apagado (ningún segmento encendido)
+            P_STATE: seg = ~7'b0111000; // P
+            R_STATE: seg = ~7'b0101111; // R
+            N_STATE: seg = ~7'b0111011; // N
+            G1:      seg = ~7'b0000110; // 1
+            G2:      seg = ~7'b1011011; // 2
+            G3:      seg = ~7'b1001111; // 3
+            G4:      seg = ~7'b1100110; // 4
+            G5:      seg = ~7'b1101101; // 5
+            G6:      seg = ~7'b1111101; // 6
+            default: seg = ~7'b0000000; // Apagar display
         endcase
     end
 
-    // Transiciones
+    // Transiciones de estado
     always @(*) begin
         next_state = current_state;
         case (current_state)
-            P_STATE:
-                if (shift_up && brake) next_state = R_STATE;
-            R_STATE:
-                if (shift_up && brake) next_state = N_STATE;
+            P_STATE: if (shift_up && brake) next_state = R_STATE;
+            R_STATE: if (shift_up && brake) next_state = N_STATE;
             N_STATE:
                 if (shift_up) next_state = G1;
                 else if (shift_down && brake) next_state = R_STATE;
@@ -76,4 +74,3 @@ module gearbox_fsm(
     end
 
 endmodule
-
