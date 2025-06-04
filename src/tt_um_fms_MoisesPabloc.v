@@ -1,5 +1,5 @@
 
-module top_gearbox_fsm(
+module tt_um_fms_MoisesPabloc(
     input clk,
     input reset,
     input shift_up,
