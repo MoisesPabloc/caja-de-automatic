@@ -1,4 +1,4 @@
-module clock_divider #(parameter DIVIDE_BY = 20_000) (  // Divide 1MHz a 25kHz
+module clock_divider #(parameter DIVIDE_BY = 2) (
     input  wire clk,
     output reg  slow_clk = 0
 );
