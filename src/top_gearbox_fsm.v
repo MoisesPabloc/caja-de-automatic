@@ -1,4 +1,3 @@
-
 module top_gearbox_fsm(
     input clk,
     input reset,
