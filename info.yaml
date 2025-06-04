@@ -1,7 +1,6 @@
 project:
   title:        "caja de automatic"
   author:       "MoisesPabloc"
-  discord:      ""
   description:  "caja de automatic"
   language:     "Verilog"
   clock_hz:     25000
@@ -11,6 +10,7 @@ project:
     - "gearbox_fsm.v"
     - "tt_um_fms_MoisesPabloc.v"
     - "clock_divider.v"
+
 pinout:
   ui[0]: "reset"
   ui[1]: "shift_up"
@@ -40,3 +40,4 @@ pinout:
   uio[7]: ""
 
 yaml_version: 6
+
