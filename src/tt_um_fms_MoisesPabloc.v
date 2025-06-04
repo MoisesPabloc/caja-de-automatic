@@ -1,27 +1,29 @@
 module tt_um_fms_MoisesPabloc (
-    input  wire [7:0] ui_in,        // Entradas físicas (GPIO inputs)
-    output wire [7:0] uo_out,       // Salidas físicas (GPIO outputs)
-    inout  wire [7:0] uio_inout,    // GPIO bidireccional (no usado aquí)
-    input  wire       clk,           // Reloj rápido (ej. 1MHz)
-    input  wire       ena,           // Enable (puede ser constante 1)
-    input  wire       rst_n          // Reset activo bajo
+    input  wire [7:0] ui_in,       // Entradas físicas (GPIO inputs)
+    output wire [7:0] uo_out,      // Salidas físicas (GPIO outputs)
+    input  wire [7:0] uio_in,      // GPIO entrada bidireccional (entrada)
+    output wire [7:0] uio_out,     // GPIO salida bidireccional (salida)
+    output wire [7:0] uio_oe,      // GPIO output enable (1 = salida)
+    input  wire       clk,          // Reloj rápido (ej. 1MHz)
+    input  wire       ena,          // Enable (puede ser constante 1)
+    input  wire       rst_n         // Reset activo bajo
 );
 
     wire slow_clk;
-    wire reset      = ~rst_n;         // FSM usa reset activo alto
+    wire reset      = ~rst_n;       // FSM usa reset activo alto
     wire shift_up   = ui_in[1];
     wire shift_down = ui_in[2];
     wire brake      = ui_in[3];
 
     wire [6:0] segments;
 
-    // Instancia del divisor de reloj: reduce clk rápido a slow_clk 25kHz
-    clock_divider #(.DIVIDE_BY(20_000)) clk_div (
+    // Divisor de reloj para obtener 25kHz de clk rápido (ej. 1MHz / 20_000)
+    clock_divider #(.DIVIDE_BY(20000)) clk_div (
         .clk(clk),
         .slow_clk(slow_clk)
     );
 
-    // Instancia FSM con slow_clk
+    // FSM con slow_clk
     gearbox_fsm fsm_inst (
         .clk(slow_clk),
         .reset(reset),
@@ -31,10 +33,11 @@ module tt_um_fms_MoisesPabloc (
         .seg(segments)
     );
 
-    // Asignar segmentos a salidas físicas y habilitar salida
     assign uo_out[6:0] = segments;
-    assign uo_out[7]   = 1'b0;        // No usado
+    assign uo_out[7]   = 1'b0;      // No usado
 
-    assign uio_inout = 8'bz;          // No usados bidireccional
+    // No usamos GPIO bidireccional, se dejan como entrada y salida deshabilitada
+    assign uio_out = 8'b0;
+    assign uio_oe  = 8'b0;
 
 endmodule
